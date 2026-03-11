@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kündigung – Boulderverein Zugzwang e.V.</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-section: #f7f7f5;
+    --text: #1a1a1a;
+    --text-muted: #666;
+    --border: #d4d4d4;
+    --border-focus: #2a7d6e;
+    --accent: #2a7d6e;
+    --accent-hover: #1f5f54;
+    --accent-light: #e8f4f1;
+    --error: #c0392b;
+    --error-bg: #fdf0ef;
+    --success: #27ae60;
+    --success-bg: #eafaf1;
+    --radius: 6px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  .form-container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 20px 40px;
+  }
+  .form-header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--error);
+  }
+  .form-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .form-header p { font-size: 14px; color: var(--text-muted); }
+  .form-section {
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .form-section h2 {
+    font-size: 15px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--accent);
+    margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .form-row { display: flex; gap: 12px; margin-bottom: 14px; }
+  .form-group { flex: 1; display: flex; flex-direction: column; }
+  label { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  label .req { color: var(--error); margin-left: 2px; }
+
+  input[type="text"], input[type="email"] {
+    width: 100%; padding: 10px 12px; font-size: 16px;
+    font-family: var(--font);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: #fff; color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    -webkit-appearance: none; appearance: none;
+  }
+  input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(42, 125, 110, 0.12);
+  }
+  input.invalid { border-color: var(--error); background: var(--error-bg); }
+  input.missing { border-color: var(--error); background: var(--error-bg); }
+
+  .ferr {
+    color: var(--error); font-size: 12px; margin-top: 4px;
+    display: none;
+  }
+  .ferr.show { display: block; }
+
+  .info-box {
+    background: var(--error-bg);
+    border-left: 3px solid var(--error);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #333;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .cb-group { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; }
+  .cb-group input[type="checkbox"] {
+    width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0;
+    accent-color: var(--accent);
+  }
+  .cb-group label { font-size: 14px; font-weight: 400; cursor: pointer; line-height: 1.45; }
+  .cb-group.missing { background: var(--error-bg); border-radius: var(--radius); padding: 6px 10px; margin: -6px -10px; border-left: 3px solid var(--error); }
+
+  .submit-btn {
+    display: block; width: 100%;
+    padding: 14px 24px;
+    font-size: 16px; font-weight: 600;
+    font-family: var(--font);
+    color: #fff;
+    background: var(--error);
+    border: none; border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+  }
+  .submit-btn:hover:not(:disabled) { background: #a93226; }
+  .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .submit-btn.loading { position: relative; color: transparent; }
+  .submit-btn.loading::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: 20px; height: 20px; margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .form-footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 14px; line-height: 1.5; }
+
+  .msg {
+    padding: 20px; border-radius: var(--radius);
+    text-align: center; margin-bottom: 20px;
+    display: none;
+  }
+  .msg h3 { margin-bottom: 6px; }
+  .msg.ok { background: var(--success-bg); color: #1a7d42; border: 1px solid #b7e4c7; }
+  .msg.err { background: var(--error-bg); color: var(--error); border: 1px solid #f5c6cb; }
+
+  .version { text-align: center; font-size: 11px; color: #aaa; margin-top: 24px; padding-bottom: 12px; }
+
+  @media (max-width: 500px) {
+    .form-row { flex-direction: column; }
+    .form-container { padding: 16px 14px 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="form-container">
+  <div class="form-header">
+    <h1>Kündigung der Mitgliedschaft</h1>
+    <p>Boulderverein Zugzwang e.V. – Neuhauser Straße 1, 91275 Auerbach</p>
+  </div>
+
+  <div class="msg ok" id="okMsg">
+    <h3>✓ Kündigung eingegangen</h3>
+    Deine Kündigung wurde erfolgreich übermittelt. Du erhältst eine Bestätigung per E-Mail.
+  </div>
+
+  <div class="msg err" id="errMsg">
+    <h3>Fehler beim Senden</h3>
+    Bitte versuche es erneut oder kontaktiere uns unter
+    <a href="mailto:info@boulderhalle-auerbach.de">info@boulderhalle-auerbach.de</a>
+  </div>
+
+  <form id="kf" novalidate>
+    <div class="form-section">
+      <h2>Persönliche Daten</h2>
+
+      <div class="info-box">
+        Bitte gib hier die Daten an, mit denen du als Mitglied registriert bist.
+        Die Mitgliedschaft endet zum <strong>31.12.<span id="endYear"></span></strong>.
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="vorname">Vorname <span class="req">*</span></label>
+          <input type="text" id="vorname" name="vorname" required autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label for="nachname">Nachname <span class="req">*</span></label>
+          <input type="text" id="nachname" name="nachname" required autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">E-Mail <span class="req">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+          <div class="ferr" id="emailErr">Bitte gib eine gültige E-Mail-Adresse ein.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>Bestätigung</h2>
+      <div class="cb-group">
+        <input type="checkbox" id="confirm" name="confirm" required>
+        <label for="confirm">
+          Ich möchte meine Mitgliedschaft beim Boulderverein Zugzwang e.V. hiermit kündigen. <span class="req">*</span>
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn" disabled>Kündigung absenden</button>
+    <div class="form-footer">
+      Mit dem Absenden dieses Formulars kündigst du deine Mitgliedschaft<br>
+      im Boulderverein Zugzwang e.V.
+    </div>
+  </form>
+  <div class="version">v1.0.0</div>
+</div>
+
+<script>
+const SCRIPT_URL = 'HIER_DEINE_KUENDIGUNG_SCRIPT_URL';
+document.getElementById('endYear').textContent = new Date().getFullYear();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const f = document.getElementById('kf');
+  const em = document.getElementById('email');
+  const ee = document.getElementById('emailErr');
+  const sb = document.getElementById('submitBtn');
+
+  // E-Mail Validierung
+  em.addEventListener('blur', () => {
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value);
+    if (em.value && !ok) { em.classList.add('invalid'); ee.classList.add('show'); }
+    else { em.classList.remove('invalid'); ee.classList.remove('show'); }
+  });
+
+  // Felder-Check
+  let formTouched = false;
+  function checkForm() {
+    let ok = true;
+
+    f.querySelectorAll('input[required]:not([type="checkbox"])').forEach(el => {
+      if (!el.value.trim()) { ok = false; if (formTouched) el.classList.add('missing'); }
+      else { el.classList.remove('missing'); }
+    });
+
+    // E-Mail Format
+    if (em.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) ok = false;
+    if (!em.value.trim()) ok = false;
+
+    // Checkbox
+    const cb = document.getElementById('confirm');
+    const grp = cb.closest('.cb-group');
+    if (!cb.checked) { ok = false; if (formTouched) grp.classList.add('missing'); }
+    else { grp.classList.remove('missing'); }
+
+    sb.disabled = !ok;
+  }
+
+  f.addEventListener('input', () => { formTouched = true; checkForm(); }, { once: true });
+  f.addEventListener('change', () => { formTouched = true; checkForm(); }, { once: true });
+  f.addEventListener('input', checkForm);
+  f.addEventListener('change', checkForm);
+  checkForm();
+
+  // Reset errors on input
+  f.addEventListener('input', e => {
+    e.target.classList.remove('invalid', 'missing');
+    e.target.closest('.form-group')?.querySelector('.ferr')?.classList.remove('show');
+  });
+
+  // Submit
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const data = {
+      vorname: f.vorname.value.trim(),
+      nachname: f.nachname.value.trim(),
+      email: f.email.value.trim(),
+      datum: new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    };
+
+    sb.disabled = true; sb.classList.add('loading');
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      f.style.display = 'none';
+      document.getElementById('okMsg').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (x) {
+      console.error(x);
+      document.getElementById('errMsg').style.display = 'block';
+      sb.disabled = false; sb.classList.remove('loading');
+    }
+  });
+});
+</script>
+</body>
+</html>
